@@ -1,8 +1,0 @@
-*.pyc
-*.orig
-database.db
-scielobooks.egg-info/
-dist/
-build/
-development.ini
-production.ini
