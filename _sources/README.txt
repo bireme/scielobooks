@@ -13,9 +13,9 @@ Server software
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  |**software**                         |**product URL**                    |**installation method**  |**Ubuntu Package name**   |
  +=====================================+===================================+=========================+==========================+
- | Python 2.5 or 2.6                   | http://www.python.org/            | OS package manager      | python2.6                |
+ | Python 2.7                          | http://www.python.org/            | OS package manager      | python2.7                |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
- | python2.x-dev (2.5 or 2.6)          | http://www.python.org/            | OS package manager      | python2.6-dev            |
+ | python2.7                           | http://www.python.org/            | OS package manager      | python2.7-dev            |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
  | GNU compiler and tools              | http://www.python.org/            | OS package manager      | build-essential          |
  +-------------------------------------+-----------------------------------+-------------------------+--------------------------+
@@ -103,7 +103,7 @@ Install the scielobooks application
     (scielobooks-env)$ svn co http://svn.reddes.bvsalud.org/scielo-books/tags/<VERSION>
 
 
-    user: anonymous 
+    user: anonymous
     password: 4guests@
 
 
@@ -203,7 +203,7 @@ Rules to reverse proxy some requests::
     <Proxy *>
         Allow from all
     </Proxy>
-    
+
     ProxyPassMatch ^/id/(.*)$ http://admin.books.scielo.org/id/$1
     ProxyPassMatch ^/static/(.*)$ http://admin.books.scielo.org/static/$1
     ProxyPassMatch ^/deform_static/(.*)$ http://admin.books.scielo.org/deform_static/$1
