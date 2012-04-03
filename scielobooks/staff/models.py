@@ -1,14 +1,21 @@
-from isis import model
-import deform
-import urllib2
-from collections import OrderedDict
-from ..utilities import functions
 import copy
+import urllib2
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
+import deform
+from isis import model
+
+from ..utilities import functions
 
 class Monograph(model.CouchdbDocument):
     title = model.TextProperty(required=True)
     translated_titles = model.MultiCompositeTextProperty(subkeys=['title','language'])
     isbn = model.TextProperty(required=True)
+    eisbn = model.TextProperty(required=False)
+    shopping_info = model.MultiCompositeTextProperty(subkeys=['store','book_url','price'])
     creators = model.MultiCompositeTextProperty(subkeys=['role','full_name', 'link_resume'])
     publisher = model.TextProperty(required=True)
     publisher_url = model.TextProperty()
@@ -21,6 +28,7 @@ class Monograph(model.CouchdbDocument):
     pages = model.TextProperty()
     primary_descriptor = model.TextProperty()
     translated_primary_descriptors = model.MultiCompositeTextProperty(subkeys=['primary_descriptor','language'])
+    bisac_code =  model.MultiCompositeTextProperty(subkeys=['code'])
     edition = model.TextProperty()
     collection = model.CompositeTextProperty(subkeys=['individual_author', 'corporate_author', 'title', 'english_translated_title', 'total_number_of_volumes'])
     format = model.CompositeTextProperty(subkeys=['height', 'width'])
@@ -81,7 +89,17 @@ class Monograph(model.CouchdbDocument):
                 return shortname_format % (first_author_lastname, self.isbn)
         else:
             raise AttributeError()
+    
+    def html_formatted_creators(self):
+        """
+        Calls self.formatted_creators passing a custom formatting function.
+        """
+        def formatting_func(creators):                
+            if len(creators) > 3:
+                return creators[0] + ' <i>et al.</i>'
 
+            return '; '.join(creators)
+        return self.formatted_creators(formatting_func)
 
 class Part(model.CouchdbDocument):
     title = model.TextProperty(required=True)

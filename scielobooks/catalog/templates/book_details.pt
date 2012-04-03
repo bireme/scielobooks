@@ -6,11 +6,16 @@
 
   <div metal:fill-slot="custom_script" tal:omit-tag="">
     <script src="/static/js/thickbox-compressed.js"></script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4ee8b6941cb0cf0d"></script>
   </div>
 
   <div metal:fill-slot="css" tal:omit-tag="">
     <link rel="stylesheet" href="/static/css/styles.css" type="text/css" media="screen"></link>
     <link rel="stylesheet" href="/static/css/thickbox.css" type="text/css" media="screen"></link>
+  </div>
+
+  <div metal:fill-slot="custom_title" tal:omit-tag="">
+    <title>SciELO Books | ${document.title}</title>
   </div>
 
   <div class="middle" metal:fill-slot="middle">
@@ -31,7 +36,7 @@
       	<h3 tal:content="document.title">The man who ate his boots</h3>
 
       	<dl class="metadata">
-          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.formatted_creators()">
+          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.html_formatted_creators()">
             <dt tal:condition="creator.lower() == 'individual_author'" i18n:translate="">Author:</dt>
             <dt tal:condition="creator.lower() == 'corporate_author'" i18n:translate="">Corporate Author:</dt>
             <dt tal:condition="creator.lower() == 'translator'" i18n:translate="">Translator:</dt>
@@ -40,7 +45,7 @@
             <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
             <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
             <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
-              <dd tal:content="creators[creator]"></dd>
+              <dd tal:content="structure creators[creator]"></dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
@@ -74,9 +79,14 @@
           <dt i18n:translate="">ISBN:</dt>
             <dd tal:content="document.isbn">0123456789</dd>
           </span>
+
+          <span tal:omit-tag="" tal:condition="getattr(document, 'eisbn', None)">
+          <dt i18n:translate="">eISBN:</dt>
+            <dd tal:content="document.eisbn">0123456789</dd>
+          </span>
       	</dl>
 
-        <div class="download_box">
+        <div class="download_box" tal:condition="not getattr(document, 'shopping_info', None)">
          <div class="download"
               tal:condition="book_attachments | nothing">
            <fieldset>
@@ -90,23 +100,42 @@
          </div>
         </div>
 
+        <div class="shopping_box" tal:condition="getattr(document, 'shopping_info', None)">
+         <div class="shopping">
+           <fieldset>
+             <legend i18n:translate="">Buy at:</legend>
+             <div tal:repeat="shopping document.shopping_info">
+              <a tal:attributes="href shopping.book_url; target '_blank'" tal:content="shopping.store" href="#">Store </a>
+              <span tal:content="shopping.price">$0,00</span>
+             </div>
+           </fieldset>
+         </div>
+        </div>
+
       	<div class="actions"></div>
       	<div class="spacer"></div>
 
-      	<div tal:condition="getattr(document, 'synopsis', None)">
-      	  <strong i18n:translate="">Synopsis</strong>
-      	  <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-      	</div>
+        <div class="shareBtn addthis_toolbox addthis_default_style">
+		  <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		  <a class="addthis_button_tweet"></a>
+		  <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+		  <a class="addthis_counter addthis_pill_style"></a>
+        </div>
+
+        <div class="synopsis" tal:condition="getattr(document, 'synopsis', None)">
+          <h3 i18n:translate="">Synopsis</h3>
+          <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
 
       	<div class="spacer"></div>
 
       	<div class="tableContents">
-          <strong i18n:translate="">Table of Contents</strong>
+          <h3 i18n:translate="">Table of Contents</h3>
           <table cellspacing="0">
             <tr tal:repeat="part parts">
               <td class="chpTitle" tal:content="part.title">Chapter 01 Lorem ipsum dolor sit amet, consectetur adipiscing elit</td>
-              <td><a class="preview" href="#" tal:attributes="href part.preview_url"><span i18n:translate="">Preview</span></a></td>
-              <td><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></td>
+              <td class="right"><a class="preview" href="#" tal:condition="not getattr(document, 'shopping_info', None)" tal:attributes="href part.preview_url"><span i18n:translate=""  tal:condition="not getattr(document, 'shopping_info', None)">Preview</span></a></td>
+              <td class="right"><span tal:condition="not getattr(document, 'shopping_info', None)"><a class="PDF" href="#" tal:condition="part.get('pdf_url', None)" tal:attributes="href part.pdf_url"><span>PDF</span></a></span></td>
             </tr>
           </table>
         </div>

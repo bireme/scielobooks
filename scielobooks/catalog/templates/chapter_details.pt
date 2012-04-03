@@ -9,21 +9,22 @@
       var swf_version = "10.0.0";
       var flashvars = {
             SwfFile : escape('${part.swf_url}'),
-            Scale : 0.95,
-            ZoomTransition : "easeOut",
+            Scale : 0.6, 
+            ZoomTransition : 'easeOut',
             ZoomTime : 0.5,
             ZoomInterval : 0.2,
-            FitPageOnLoad : false,
-            FitWidthOnLoad : true,
-            PrintEnabled : true,
+            FitPageOnLoad : true,
+            FitWidthOnLoad : false,
             FullScreenAsMaxWindow : false,
             ProgressiveLoading : false,
-            MinZoomSize : 0.3,
+            MinZoomSize : 0.2,
             MaxZoomSize : 5,
-            PrintToolsVisible : true,
+            SearchMatchAll : false,
+            InitViewMode : 'Portrait',
+            PrintPaperAsBitmap : false,
+
             ViewModeToolsVisible : true,
             ZoomToolsVisible : true,
-            FullScreenVisible : true,
             NavToolsVisible : true,
             CursorToolsVisible : true,
             SearchToolsVisible : true,
@@ -54,6 +55,10 @@
     tal:condition="document.publisher"
     tal:content="document.publisher">EDUSP</h2>
 
+  <div metal:fill-slot="custom_title" tal:omit-tag="">
+    <title>SciELO Books | ${document.title}</title>
+  </div>
+
   <div class="middle" metal:fill-slot="middle">
     <div class="breadcrumb">
       <a href="/" tal:attributes="href breadcrumb.home">Home</a> / <a href="" tal:attributes="href breadcrumb.search" i18n:translate="">Search</a> / <a href="#" tal:attributes="href breadcrumb.book" tal:content="document.title">Book</a> / <span tal:replace="part.title">Le Petit Prince</span>
@@ -67,7 +72,7 @@
 	<div class="spacer"></div>
 	<div class="previewBookDetail">
 	  <dl class="metadata">
-          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.formatted_creators()">
+          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.html_formatted_creators()">
             <dt tal:condition="creator.lower() == 'individual_author'" i18n:translate="">Author:</dt>
             <dt tal:condition="creator.lower() == 'corporate_author'" i18n:translate="">Corporate Author:</dt>
             <dt tal:condition="creator.lower() == 'translator'" i18n:translate="">Translator:</dt>
@@ -76,7 +81,7 @@
             <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
             <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
             <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
-              <dd tal:content="creators[creator]"></dd>
+              <dd tal:content="structure creators[creator]"></dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
