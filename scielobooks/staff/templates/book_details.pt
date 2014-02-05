@@ -60,7 +60,7 @@
 
 
         <dl class="metadata">
-          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.formatted_creators()">
+          <span tal:omit-tag="" tal:repeat="creator creators" tal:define="creators document.html_formatted_creators()">
             <dt tal:condition="creator.lower() == 'individual_author'" i18n:translate="">Author:</dt>
             <dt tal:condition="creator.lower() == 'corporate_author'" i18n:translate="">Corporate Author:</dt>
             <dt tal:condition="creator.lower() == 'translator'" i18n:translate="">Translator:</dt>
@@ -69,7 +69,7 @@
             <dt tal:condition="creator.lower() == 'other'" i18n:translate="">Other:</dt>
             <dt tal:condition="creator.lower() == 'organizer'" i18n:translate="">Organizer:</dt>
             <dt tal:condition="creator.lower() == 'collaborator'" i18n:translate="">Collaborator:</dt>
-              <dd tal:content="creators[creator]"></dd>
+              <dd tal:content="structure creators[creator]"></dd>
           </span>
 
           <span tal:omit-tag="" tal:condition="getattr(document, 'publisher', None)">
@@ -129,17 +129,17 @@
 
         <span tal:omit-tag="" tal:condition="getattr(document, 'synopsis', None)">
         <div class="synopsis">
-          <strong i18n:translate="">Synopsis</strong>
+          <h3 i18n:translate="">Synopsis</h3>
           <p tal:content="document.synopsis">Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
         </div>
         <div class="spacer"></div>
         </span>
 
         <div class="book-parts">
-          <strong>
+          <h3>
             <span  i18n:translate="" tal:omit-tag="">Book Parts</span>
             <span class="add"><a href="${add_part_url}" i18n:translate="">Add</a></span>
-          </strong>
+          </h3>
           <table>
             <tr>
                 <th i18n:translate="">Order</th>

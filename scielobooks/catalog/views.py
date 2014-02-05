@@ -17,6 +17,9 @@ from scielobooks.utilities import functions
 
 from operator import itemgetter
 from datetime import datetime, timedelta
+import hashlib
+import shutil
+import StringIO
 
 import couchdbkit
 import urllib2
@@ -101,7 +104,7 @@ def book_details(request):
             # some mandatory data is missing. do not make the link public
             pass
         else:
-            book_attachments.append({'url':epub_file_url, 'text':_('Book in ePub'), 'css_class': 'epub_file'})
+            book_attachments.append({'url':epub_file_url, 'text':_('Book in EPUB'), 'css_class': 'epub_file'})
 
     main = get_renderer(BASE_TEMPLATE).implementation()
 
@@ -167,11 +170,6 @@ def cover(request):
 
     response = Response(**response_headers)
     response.app_iter = img
-    try:
-        response.etag = str(hash(img))
-    except TypeError:
-        #cannot generate a hash for the object, return it without the ETag
-        pass
 
     return response
 
