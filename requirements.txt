@@ -15,7 +15,7 @@ Tempita==0.5.1
 WebError==0.10.3
 WebOb==1.2b2
 argh==0.14.2
-colander==0.9.4
+colander==1.7.0
 couchdbkit==0.5.7
 deform==0.9.3
 distribute==0.6.19
